@@ -1,0 +1,12 @@
+# .npmignore is overridden by the `files` array in package.json,
+# but keep this around as a belt-and-braces for local `npm pack` tests.
+src
+test
+demo
+node_modules
+bun.lock
+tsconfig*.json
+.npmignore
+.gitignore
+CLAUDE.md
+.cursor

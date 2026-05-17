@@ -1,0 +1,6 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-500: oklch(0.62 0.21 260);
+  --radius-pill: 999px;
+}

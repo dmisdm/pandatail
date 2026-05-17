@@ -1,0 +1,4 @@
+@layer reset, tailwind, base, tokens, recipes, utilities;
+
+/* Panda PostCSS plugin replaces this with generated tokens/recipes/utilities */
+@layer reset, base, tokens, recipes, utilities;

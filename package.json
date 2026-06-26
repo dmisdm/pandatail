@@ -1,6 +1,6 @@
 {
   "name": "@dmisdm/pandatail",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "PandaCSS preset that mirrors every token in your Tailwind v4 @theme into typed Panda style props. One source of truth, full TS type safety.",
   "license": "MIT",
   "keywords": [

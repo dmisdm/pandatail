@@ -2,7 +2,7 @@ import postcss, { type AtRule, type Declaration, type Root } from "postcss";
 import { readFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { dirname, resolve } from "node:path";
-import { matchNamespace } from "./namespaces";
+import { deriveTokenPath, matchNamespace } from "./namespaces";
 import { synthesiseDerivedTokens } from "./derivedScales";
 import type { ExtractedToken } from "./extract";
 
@@ -60,7 +60,7 @@ export function extractTokensSync(opts: ExtractSyncOptions): ExtractedToken[] {
           ? rawValue
           : `var(${cssVar})`,
       category: matched.mapping.category,
-      path: matched.rest.split("-"),
+      path: deriveTokenPath(matched.rest),
     });
   }
   out.push(...synthesiseDerivedTokens(decls.has("--spacing")));

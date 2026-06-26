@@ -65,7 +65,7 @@ function buildPreset(tokens: ExtractedToken[]) {
   const tokensByCategory = groupByCategory(tokenTokens);
   const theme: Record<string, TokenTree> = {};
   for (const [category, list] of Object.entries(tokensByCategory)) {
-    theme[category] = buildTree(list);
+    theme[category] = buildTree(list, category);
   }
 
   return definePreset({
@@ -98,14 +98,24 @@ function groupByCategory(
   return out;
 }
 
-function buildTree(tokens: ExtractedToken[]): TokenTree {
+function buildTree(tokens: ExtractedToken[], category: string): TokenTree {
   const root: TokenTree = {};
   for (const t of tokens) {
     let cursor: TokenTree = root;
     for (let i = 0; i < t.path.length - 1; i++) {
       const seg = t.path[i]!;
       const next = cursor[seg];
-      if (!next || "value" in next) {
+      if (next && "value" in next) {
+        // A leaf already lives here but this token wants to nest *under* it.
+        // Panda can't represent a token that is both a value and a group, so
+        // fail loudly rather than silently overwriting one with the other.
+        throw new Error(
+          `pandatail: token path collision in '${category}' at ` +
+            `'${t.path.slice(0, i + 1).join(".")}': ` +
+            `'${t.path.join(".")}' nests under a token that is already a leaf.`,
+        );
+      }
+      if (!next) {
         const fresh: TokenTree = {};
         cursor[seg] = fresh;
         cursor = fresh;
@@ -114,6 +124,15 @@ function buildTree(tokens: ExtractedToken[]): TokenTree {
       }
     }
     const leaf = t.path[t.path.length - 1]!;
+    const existing = cursor[leaf];
+    if (existing && !("value" in existing)) {
+      // The mirror image: a group already lives here but this token wants the
+      // same name as a leaf.
+      throw new Error(
+        `pandatail: token path collision in '${category}' at ` +
+          `'${t.path.join(".")}': a leaf token clashes with an existing group.`,
+      );
+    }
     cursor[leaf] = { value: t.value };
   }
   return root;

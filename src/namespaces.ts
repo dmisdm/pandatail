@@ -56,6 +56,26 @@ export const TAILWIND_NAMESPACES: NamespaceMapping[] = [
   { prefix: "perspective", category: "sizes" },
 ];
 
+/**
+ * Derive a token's nested Panda path from the post-namespace remainder.
+ *
+ * Only a *trailing numeric scale step* nests (`amber-500` → `['amber','500']`);
+ * everything else stays a single flat segment with hyphens preserved
+ * (`muted-foreground` → `['muted-foreground']`). Splitting every hyphen — as we
+ * used to — collapsed shadcn's paired `--color-X` / `--color-X-foreground`
+ * tokens onto colliding leaf/parent paths, silently dropping one of each pair.
+ */
+export function deriveTokenPath(rest: string): string[] {
+  const lastDash = rest.lastIndexOf("-");
+  if (lastDash > 0) {
+    const after = rest.slice(lastDash + 1);
+    if (/^\d+$/.test(after)) {
+      return [rest.slice(0, lastDash), after];
+    }
+  }
+  return [rest];
+}
+
 export function matchNamespace(
   themeKey: string,
 ): { mapping: NamespaceMapping; rest: string } | null {

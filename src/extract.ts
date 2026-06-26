@@ -2,7 +2,7 @@ import { __unstable__loadDesignSystem } from "tailwindcss";
 import { readFile } from "node:fs/promises";
 import { createRequire } from "node:module";
 import { dirname, resolve } from "node:path";
-import { matchNamespace, type PandaTokenCategory } from "./namespaces";
+import { deriveTokenPath, matchNamespace, type PandaTokenCategory } from "./namespaces";
 import { synthesiseDerivedTokens } from "./derivedScales";
 
 const requireFromHere = createRequire(`${process.cwd()}/__pandatail_anchor__`);
@@ -101,7 +101,7 @@ export async function extractTokens(opts: ExtractOptions): Promise<ExtractedToke
       value:
         matched.mapping.category === "breakpoints" ? rawValue : `var(${key})`,
       category: matched.mapping.category,
-      path: matched.rest.split("-"),
+      path: deriveTokenPath(matched.rest),
     });
   }
   out.push(...synthesiseDerivedTokens(themeEntries.has("--spacing")));

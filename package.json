@@ -34,10 +34,6 @@
     "README.md",
     "LICENSE"
   ],
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://npm.pkg.github.com"
-  },
   "scripts": {
     "build": "bun run clean && bun run build:js && bun run build:types",
     "build:js": "bun build src/index.ts --outdir dist --target node --format esm --external @pandacss/dev --external tailwindcss --external postcss",

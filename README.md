@@ -3,23 +3,9 @@
 A **PandaCSS preset** that mirrors every token in your Tailwind v4
 `@theme { … }` block into typed Panda style props.
 
-> Hosted on **GitHub Packages** as `@dmisdm/pandatail`.
-
 ## Install
 
-GitHub Packages requires a small one-time bit of `.npmrc` plumbing — even for
-public packages — because GitHub authenticates every read.
-
-```sh
-# 1. In your project root, create or append to .npmrc:
-echo "@dmisdm:registry=https://npm.pkg.github.com" >> .npmrc
-
-# 2. Authenticate (do this once per machine, not in committed files).
-#    Create a Personal Access Token with the `read:packages` scope at
-#    https://github.com/settings/tokens, then:
-echo "//npm.pkg.github.com/:_authToken=YOUR_GITHUB_PAT" >> ~/.npmrc
-
-# 3. Install
+```
 npm install -D @dmisdm/pandatail
 ```
 
@@ -89,19 +75,19 @@ is a `var()` reference back to the CSS variable.
 
 Namespaces map to Panda categories:
 
-| Tailwind namespace | Panda category |
-| ------------------ | -------------- |
-| `--color-*`        | `colors`       |
-| `--spacing-*`      | `spacing` + `sizes` |
-| `--radius-*`       | `radii`        |
-| `--shadow-*`       | `shadows`      |
-| `--text-*`         | `fontSizes`    |
-| `--font-*`         | `fonts`        |
-| `--font-weight-*`  | `fontWeights`  |
-| `--leading-*`      | `lineHeights`  |
-| `--tracking-*`     | `letterSpacings` |
+| Tailwind namespace | Panda category                      |
+| ------------------ | ----------------------------------- |
+| `--color-*`        | `colors`                            |
+| `--spacing-*`      | `spacing` + `sizes`                 |
+| `--radius-*`       | `radii`                             |
+| `--shadow-*`       | `shadows`                           |
+| `--text-*`         | `fontSizes`                         |
+| `--font-*`         | `fonts`                             |
+| `--font-weight-*`  | `fontWeights`                       |
+| `--leading-*`      | `lineHeights`                       |
+| `--tracking-*`     | `letterSpacings`                    |
 | `--breakpoint-*`   | `theme.breakpoints` (media queries) |
-| `--container-*`    | `sizes`        |
+| `--container-*`    | `sizes`                             |
 
 Tailwind derives numeric scales (`p-4`, `leading-6`) from the single
 `--spacing` token; the preset synthesises those steps into Panda's
@@ -112,8 +98,8 @@ Tailwind's coverage.
 
 ```ts
 import {
-  tailwindPreset,        // async — uses Tailwind's design-system loader
-  tailwindPresetSync,    // sync — call from panda.config.ts (recommended)
+  tailwindPreset, // async — uses Tailwind's design-system loader
+  tailwindPresetSync, // sync — call from panda.config.ts (recommended)
   extractTokens,
   extractTokensSync,
 } from "@dmisdm/pandatail";
